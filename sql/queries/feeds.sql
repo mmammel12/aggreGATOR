@@ -8,17 +8,13 @@ VALUES (
 )
 RETURNING *;
 
--- name: GetFeed :one
-SELECT * FROM USERS
-WHERE name = $1 LIMIT 1;
-
--- name: DeleteFeeds :exec
-DELETE FROM feeds;
-
--- name: ListFeeds :many
-SELECT * FROM feeds;
-
 -- name: ListFeedsWithUsers :many
-SELECT feeds.name, feeds.url, users.name AS User FROM feeds
+SELECT
+    feeds.name AS feed_name,
+    users.name AS user_name FROM feeds
 INNER JOIN users
 ON feeds.user_id = users.id;
+
+-- name: GetFeedByURL :one
+SELECT * from feeds
+WHERE url = $1;
