@@ -32,7 +32,7 @@ func fetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 		return &RSSFeed{}, err
 	}
 
-	var feed RSSFeed
+	feed := RSSFeed{}
 	err = xml.Unmarshal(body, &feed)
 	if err != nil {
 		return &RSSFeed{}, err

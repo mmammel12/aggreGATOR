@@ -1,24 +1,20 @@
 package main
 
 import (
-	"context"
-	"encoding/xml"
 	"fmt"
+	"time"
 )
 
-func handlerAgg(_ *state, _ command) error {
-	url := "https://www.wagslane.dev/index.xml"
+func handlerAgg(s *state, _ command) error {
+	duration := 1 * time.Minute
+	ticker := time.NewTicker(duration)
 
-	feed, err := fetchFeed(context.Background(), url)
-	if err != nil {
-		return err
+	fmt.Printf("Collecting feeds every %v\n", duration.String())
+
+	for ; ; <-ticker.C {
+		err := scrapeFeeds(s)
+		if err != nil {
+			return err
+		}
 	}
-
-	data, err := xml.MarshalIndent(feed, "", "  ")
-	if err != nil {
-		return err
-	}
-	fmt.Println(string(data))
-
-	return nil
 }
